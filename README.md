@@ -37,8 +37,8 @@ Of course we can open the archive file in GUI or list its content in command lin
 Mechanism
 ---------
 
-1. Determine archive type using `file $filename` utility.
-2. If it's a ZIP archive, use `zip -l $filename` to get its content; if TAR archive, use `tar tf $filename` to get its content; if GZIP-compressed TAR archive, use `tar tzf $filename` to get its content.
+1. Determine archive type using Python `magic` module.
+2. If it's a ZIP archive, use Python `zipfile` package to get its content; if TAR archive, use Python `tarfile` package to get its content; if GZIP-compressed TAR archive, use Python `tarfile` package to get its content.
 3. Parse the content list and count the root entities.
 
 
@@ -53,10 +53,16 @@ Currently Supported Archive Type
 Currently Supported Platform
 ----------------------------
 
-* Linux, with `file`, `zip`, `tar` utilities on `PATH`.
+* Any platform with dependencies listed below.
 
 
 Dependencies
 ------------
 
-* [chardet](https://pypi.python.org/pypi/chardet), used to correctly parse the output 
+* [magic](https://pypi.python.org/pypi/python-magic/), used to get the archive type
+
+These dependencies may have been included in your Python 3 distribution:
+
+* pathlib
+* zipfile
+* tarfile
