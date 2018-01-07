@@ -21,7 +21,7 @@ If extracting `something.zip` to current folder, and if current folder already c
 On the other hand, given the following archive file:
 
 <pre>
-	another.zip
+	another.tar
 	|- folder2
 	   |- file21
 	   |- file22
@@ -32,6 +32,19 @@ On the other hand, given the following archive file:
 If we extract its content to a new directory `another/`, then there will be an extra layer of directory, the extra depth introduced of which is not always desirable. 
 
 Of course we can open the archive file in GUI or list its content in command line to help decide whether to extract it all to the current directory, or make a new directory for its content before extracting; but if the list of content file is huge, it soon becomes tedious to find out its pattern. This is the problem this utility attempts to solve.
+
+
+Usage Example
+-------------
+
+Take above two ememplary virtual archives:
+
+	car something.zip another.tar
+
+The output will be:
+
+	3 something.zip
+	1 another.tar
 
 
 Mechanism
