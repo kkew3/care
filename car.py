@@ -39,8 +39,8 @@ def get_archive_entries(filename):
         try:
             with tarfile.open(filename) as infile:
                 entries = map(PurePath, infile.getnames())
-            except tarfile.ReadError:
-                raise UnrecognizableArchiveError()
+        except tarfile.ReadError:
+            raise UnrecognizableArchiveError()
     else:
         raise UnrecognizableArchiveError()
     return entries  # iter object, not list
