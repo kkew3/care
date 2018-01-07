@@ -66,3 +66,9 @@ These dependencies may have been included in your Python 3 distribution:
 * pathlib
 * zipfile
 * tarfile
+
+
+Known Issues
+------------
+
+* `magic` module may not work well on Windows 64 bit system. 
