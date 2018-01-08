@@ -78,7 +78,7 @@ Dependencies
 
 ### Optional
 
-* [magic](https://pypi.python.org/pypi/python-magic/), used to get the archive type. Without `magic` module, the utility guess archive type according to its filename, which can be of limited functionality under some circumstances. 
+* [magic](https://pypi.python.org/pypi/python-magic/), used to get the archive type. Without `magic` module, the utility guesses archive type according to its filename, which can be of limited functionality under some circumstances. 
 
 ### Should be part of Python 3 standard library
 
