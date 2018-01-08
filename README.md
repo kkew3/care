@@ -46,6 +46,10 @@ The output will be:
 	3 something.zip
 	1 another.tar
 
+For the entire help message, refer to
+
+	car -h
+
 
 Mechanism
 ---------
@@ -72,16 +76,12 @@ Currently Supported Platform
 Dependencies
 ------------
 
-* [magic](https://pypi.python.org/pypi/python-magic/), used to get the archive type
+### Optional
 
-These dependencies may have been included in your Python 3 distribution:
+* [magic](https://pypi.python.org/pypi/python-magic/), used to get the archive type. Without `magic` module, the utility guess archive type according to its filename, which can be of limited functionality under some circumstances. 
+
+### Should be part of Python 3 standard library
 
 * pathlib
 * zipfile
 * tarfile
-
-
-Known Issues
-------------
-
-* `magic` module may not work well on Windows 64 bit system. 

@@ -32,7 +32,8 @@ def make_parser():
             '(`pip install python-magic`) is not found, filename extension '
             'will be used to guess the archive type. The return code is 0 '
             'if there is no unrecognized archive; otherwise it\'s 1.', 
-            epilog='Currently support .zip, .tar, .tar.gz types.')
+            epilog='Currently support .zip, .tar, .tar.gz types. Python '
+            'globbing is supported when giving the archive file(s).')
     parser.add_argument('afile', nargs='+', help='the archive file(s) whose '
             'root entries are to be counted')
     parser.add_argument('-M', dest='importmagic', help='don\'t even attempt '
