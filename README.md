@@ -5,7 +5,7 @@ CARE -- Count Archive Root entries
 Introduction
 ------------
 
-`CARE` is a Python 3 utility to count the number of entities at the root of an archive. For example, given the following archive file:
+`care` is a Python 3 utility to count the number of entities at the root of an archive. For example, given the following archive file:
 
 	something.zip
 	|- folder1
@@ -56,15 +56,15 @@ Detailed usage
 
 	usage: care [-h] [-T {zip,tar} | -M | -W] [-l] archive
 
-	(C)ount (a)rchive (r)oot (e)ntries.Count entries at the root of an archive
-	file so that one may decide whether ornot to unpack it to a new folder or to
-	the current folder without messing upother files under the current folder. If
-	``magic`` module, installed via pipby name ``python-magic``, is not found, and
-	the file type is not providedexplicity via command line options, then filename
-	extension will be used toguess the archive type. The return code: 0) success;
-	1) if the archive typeis not recognizable; 2) if error is raised when opening
-	the archive. Currentlysupported archive type: ZIP, TAR, GZ-compressed TAR,
-	BZ2-compressed TAR,XZ-compressed TAR.
+	(C)ount (a)rchive (r)oot (e)ntries. Count entries at the root of an archive
+	file so that one may decide whether or not to unpack it to a new folder or to
+	the current folder without messing up other files under the current folder. If
+	``magic`` module, installed via pip by name ``python-magic``, is not found,
+	and the file type is not provided explicity via command line options, then
+	filename extension will be used to guess the archive type. The return code: 0)
+	success; 1) if the archive type is not recognizable; 2) if error is raised
+	when opening the archive. Currently supported archive type: ZIP, TAR, GZ-
+	compressed TAR, BZ2-compressed TAR, XZ-compressed TAR.
 
 	positional arguments:
 	  archive               the archive file
@@ -79,6 +79,7 @@ Detailed usage
 				cannot be found
 	  -l, --list            rather than print the count, list all unique root
 				entries
+
 
 Mechanism
 ---------
