@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 __author__ = 'Kaiwen Wu'
-__version__ = '2.1-alpha'
+__version__ = '2.2-beta'
 __description__ = '''(C)ount (a)rchive (r)oot (e)ntries.
 Count entries at the root of an archive file so that one may decide whether or
 not to unpack it to a new folder or to the current folder without messing up
@@ -40,9 +40,13 @@ def make_parser():
                      action='store_true',
                      help='suppress warning into stderr when `magic` module '
                           'cannot be found')
-    parser.add_argument('-l', '--list', action='store_true',
-                        help='rather than print the count, list all unique '
-                             'root entries')
+    pres = parser.add_mutually_exclusive_group()  # (pres)entation option
+    pres.add_argument('-f', '--with-filename', action='store_true',
+                      dest='with_filename',
+                      help='print the count as: "${count} ${filename}"')
+    pres.add_argument('-l', '--list', action='store_true',
+                      help='rather than print the count, list all unique '
+                           'root entries')
     return parser
 
 
@@ -172,7 +176,10 @@ def main():
         print('\n'.join(rentries))
     else:
         count = count_root_entries(entries)
-        print(count)
+        if args.with_filename:
+            print(count, args.archive)
+        else:
+            print(count)
 
 if __name__ == '__main__':
     retcode = main()
