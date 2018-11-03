@@ -22,6 +22,18 @@ import importlib
 from functools import partial
 from pathlib import PurePath
 
+try:
+    import libarchive.public
+except ImportError:
+    support7z = False
+else:
+    support7z = True
+
+
+archive_supported = ['zip', 'tar']
+if support7z:
+    archive_supported.append('7z')
+
 
 def make_parser():
     parser = argparse.ArgumentParser(
@@ -29,7 +41,7 @@ def make_parser():
     parser.add_argument('archive', help='the archive file')
     mfb = parser.add_mutually_exclusive_group()  # (m)agic (f)all(b)ack
     mfb.add_argument('-T', '--file-type', dest='file_type',
-                     choices=('zip', 'tar'),
+                     choices=archive_supported,
                      help='the file type of ARCHIVE, where "tar" option '
                           'includes TAR archive and that compressed by gzip, '
                           'bzip2, or XZ')
@@ -61,11 +73,15 @@ def guess_archive_type_ext(filename: str) -> str:
         (['.tar.gzip', '.tar.gz', '.tgz' ], 'tar'),
         (['.tar.bzip2', '.tar.bz2'], 'tar'),
         (['.tar.xzip', '.tar.xz'], 'tar'),
+        # only when 7zsupported
+        (['.7z'], '7z'),
     ]
     expanded_ext2at = [(k, v) for l, v in ext2at for k in l]
     at = [v for k, v in expanded_ext2at if filename.endswith(k)]
     assert len(at) <= 1, 'Illegal ``ext2at`` specification'
     if at:
+        if at[0] == '7z' and not support7z:
+            raise UnrecognizableArchiveError()
         return at[0]
     else:
         raise UnrecognizableArchiveError()
@@ -84,10 +100,14 @@ def guess_archive_type_magic(magic, filename: str) -> str:
         ('gzip compressed data', 'tar'),
         ('bzip2 compressed data', 'tar'),
         ('XZ compressed data', 'tar'),
+        # only when 7zsupported
+        ('7-zip archive data', '7z'),
     ]
     at = [v for k, v in kw2at if k in mime]
     assert len(at) <= 1, 'Illegal ``kw2at`` specification'
     if at:
+        if at[0] == '7z' and not support7z:
+            raise UnrecognizableArchiveError()
         return at[0]
     else:
         return UnrecognizableArchiveError()
@@ -105,6 +125,13 @@ def get_archive_entries(filename, archive_type):
             with tarfile.open(filename) as infile:
                 entries = map(PurePath, infile.getnames())
         except tarfile.ReadError:
+            raise ArchiveReadError()
+    elif archive_type == '7z':
+        try:
+            with libarchive.public.file_reader(filename) as infile:
+                entries = map(PurePath, [e.pathname for e in infile])
+        except:
+            # not sure what error file_reader will raise ...
             raise ArchiveReadError()
     else:
         assert False
@@ -145,30 +172,30 @@ def main():
     args = make_parser().parse_args()
     if args.file_type:
         archive_type = args.file_type
-    elif args.no_magic:
-        try:
-            archive_type = guess_archive_type_ext(args.archive)
-        except UnrecognizableArchiveError:
-            return 1
     else:
-        try:
-            magic = importlib.import_module('magic')
-        except ImportError:
-            if not args.suppress_ext_warning:
-                msg = ('Warning: error loading `python-magic` module; using '
-                       'filename extension to decide archive type')
-                print(msg, file=sys.stderr)
-            try:
-                guess_archive_type = guess_archive_type_ext
-            except UnrecognizableArchiveError:
-                return 1
+        if args.no_magic:
+            guess_archive_type = guess_archive_type_ext
         else:
-            guess_archive_type = partial(guess_archive_type_magic, magic)
-        archive_type = guess_archive_type(args.archive)
+            try:
+                magic = importlib.import_module('magic')
+            except ImportError:
+                if not args.suppress_ext_warning:
+                    msg = ('Warning: error loading `python-magic` module; '
+                           'using filename extension to decide archive type')
+                    print(msg, file=sys.stderr)
+                guess_archive_type = guess_archive_type_ext
+            else:
+                guess_archive_type = partial(guess_archive_type_magic, magic)
+        try:
+            archive_type = guess_archive_type(args.archive)
+        except UnrecognizableArchiveError:
+            print('Unrecognizable archive:', args.archive, file=sys.stderr)
+            return 1
 
     try:
         entries = get_archive_entries(args.archive, archive_type)
     except ArchiveReadError:
+        print('Error reading archive:', args.archive, file=sys.stderr)
         return 2
 
     if args.list:
