@@ -1,0 +1,5 @@
+# necessary for 7z support
+libarchive
+
+# necessary for magic support
+python-magic
