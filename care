@@ -11,7 +11,9 @@ explicity via command line options, then filename extension will be used to
 guess the archive type. The return code: 0) success; 1) if the archive type
 is not recognizable; 2) if error is raised when opening the archive. Currently
 supported archive type: ZIP, TAR, GZ-compressed TAR, BZ2-compressed TAR,
-XZ-compressed TAR.'''
+XZ-compressed TAR, and 7Z. For 7z support, ``libarchive-dev`` should have been
+installed using, say, ``apt`` in Debian/Ubuntu; and ``libarchive`` package via
+``pip``.'''
 
 
 import argparse

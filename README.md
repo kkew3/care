@@ -54,7 +54,7 @@ Detailed usage
 
 > Copied from `care --help`
 
-	usage: care [-h] [-T {zip,tar} | -M | -W] [-l] archive
+	usage: care [-h] [-T {zip,tar,7z} | -M | -W] [-f | -l] archive
 
 	(C)ount (a)rchive (r)oot (e)ntries. Count entries at the root of an archive
 	file so that one may decide whether or not to unpack it to a new folder or to
@@ -64,19 +64,22 @@ Detailed usage
 	filename extension will be used to guess the archive type. The return code: 0)
 	success; 1) if the archive type is not recognizable; 2) if error is raised
 	when opening the archive. Currently supported archive type: ZIP, TAR, GZ-
-	compressed TAR, BZ2-compressed TAR, XZ-compressed TAR.
+	compressed TAR, BZ2-compressed TAR, XZ-compressed TAR, and 7Z. For 7z support,
+	``libarchive-dev`` should have been installed using, say, ``apt`` in
+	Debian/Ubuntu; and ``libarchive`` package via ``pip``.
 
 	positional arguments:
 	  archive               the archive file
 
 	optional arguments:
 	  -h, --help            show this help message and exit
-	  -T {zip,tar}, --file-type {zip,tar}
+	  -T {zip,tar,7z}, --file-type {zip,tar,7z}
 				the file type of ARCHIVE, where "tar" option includes
 				TAR archive and that compressed by gzip, bzip2, or XZ
 	  -M, --no-magic        don't even attempt to import `magic` module
 	  -W, --no-ext-warning  suppress warning into stderr when `magic` module
 				cannot be found
+	  -f, --with-filename   print the count as: "${count} ${filename}"
 	  -l, --list            rather than print the count, list all unique root
 				entries
 
@@ -108,7 +111,16 @@ Dependencies
 
 ### Optional
 
-* [magic](https://pypi.python.org/pypi/python-magic/), used to get the archive type. Without `magic` module, the utility guesses archive type according to its filename, which can be of limited functionality under some circumstances. 
+* [magic](https://pypi.python.org/pypi/python-magic/), used to get the archive type. Without `magic` module, the utility guesses archive type according to its filename, which can be of limited functionality under some circumstances. Can be installed by `pip3 install python-magic`.
+* [libarchive](https://pypi.org/project/libarchive/), used to read 7z entries. Can be installed by `pip3 install libarchive`. Note that `libarchive-dev` is necessary to successfully install this package.
+* [libarchive-dev](https://packages.debian.org/sid/libarchive-dev), dependency of `libarchive`.
+
+How to install all the optional dependencies at once (Debian/Ubuntu):
+
+```bash
+sudo apt install libarchive-dev
+pip3 install -r requirements.txt
+```
 
 ### Should be part of Python 3 standard library
 
