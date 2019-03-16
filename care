@@ -115,7 +115,7 @@ def guess_archive_type_magic(magic, filename: str) -> str:
         return UnrecognizableArchiveError()
 
 
-def get_archive_entries(filename, archive_type) -> typing.Iterator[PurePath]
+def get_archive_entries(filename, archive_type) -> typing.Iterator[PurePath]:
     if archive_type == 'zip':
         try:  # just in case
             with zipfile.ZipFile(filename) as infile:
