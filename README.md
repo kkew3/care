@@ -127,3 +127,10 @@ pip3 install -r requirements.txt
 * pathlib
 * zipfile
 * tarfile
+
+
+NPCARE
+======
+
+`npcare` uses the same backend as `care` but relies on external program, e.g. `unzip -Z1 FILENAME` or `tar tf FILENAME` to prepare the archive file into a list of content filenames.
+Therefore, it requires less dev dependencies.
