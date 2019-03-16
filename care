@@ -209,7 +209,12 @@ def main():
             print(count, args.archive)
         else:
             print(count)
+    return 0
 
 if __name__ == '__main__':
-    retcode = main()
-    sys.exit(retcode)
+    try:
+        retcode = main()
+    except (KeyboardInterrupt, BrokenPipeError):
+        sys.exit(130)
+    else:
+        sys.exit(retcode)
