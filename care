@@ -17,6 +17,7 @@ installed using, say, ``apt`` in Debian/Ubuntu; and ``libarchive`` package via
 
 
 import argparse
+import typing
 import sys
 import zipfile
 import tarfile
@@ -114,7 +115,7 @@ def guess_archive_type_magic(magic, filename: str) -> str:
         return UnrecognizableArchiveError()
 
 
-def get_archive_entries(filename, archive_type):
+def get_archive_entries(filename, archive_type) -> typing.Iterator[PurePath]
     if archive_type == 'zip':
         try:  # just in case
             with zipfile.ZipFile(filename) as infile:
@@ -136,7 +137,7 @@ def get_archive_entries(filename, archive_type):
             raise ArchiveReadError()
     else:
         assert False
-    return entries  # iter object, not list
+    return entries
 
 
 def get_root_entry(tokenized_entry: list):
