@@ -4,3 +4,7 @@ __pycache__
 
 # python runtime
 rt/
+
+# bin related
+make_bin.sh
+bin/
