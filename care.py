@@ -1,6 +1,6 @@
 
 # To support archive with non-ASCII path name entries, make changes to
-# ${VIRTUALENV}/lib/python3.6/site-packages/libarchive/adapters/archive_read.py
+# ${VIRTUAL_ENV}/lib/python3.6/site-packages/libarchive/adapters/archive_read.py
 # as per https://github.com/dsoprea/PyEasyArchive/issues/52.
 
 __author__ = 'Kaiwen Wu'
