@@ -42,7 +42,9 @@ Installation
 # or use another name other than 'rt' ...
 python3 -m virtualenv rt
 . rt/bin/activate
+pip install -r requirements.txt
 bash make_bin.sh
+deactivate
 path_to_care="$(realpath bin/care)"
 # assuming ~/bin in PATH, or go to another directory in PATH ...
 cd ~/bin
