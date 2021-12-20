@@ -35,6 +35,21 @@ all to the current directory, or make a new directory for its content before ext
 is huge, it soon becomes tedious to find out its pattern. This is the problem this utility attempts to solve.
 
 
+Installation
+------------
+
+```sh
+# or use another name other than 'rt' ...
+python3 -m virtualenv rt
+. rt/bin/activate
+bash make_bin.sh
+path_to_care="$(realpath bin/care)"
+# assuming ~/bin in PATH, or go to another directory in PATH ...
+cd ~/bin
+ln -s "$path_to_care" care
+```
+
+
 Usage Example
 -------------
 
