@@ -12,10 +12,12 @@ other files under the current folder. The return code: 0) success;
 1) if error is raised when opening the archive. Support all archive types
 ``libarchive`` supports.'''.replace('\n', ' ')
 
+import sys
 import argparse
 import logging
 
-import libarchive.public as arch
+import libarchive.public
+import libarchive.exception
 
 
 def make_parser():
@@ -33,7 +35,7 @@ def make_parser():
 # - illegal pathname
 def get_root_entries(filename):
     root_entries = []
-    with arch.file_reader(filename) as infile:
+    with libarchive.public.file_reader(filename) as infile:
         for entry in infile:
             root_entry = entry.pathname.split('/', maxsplit=1)[0]
             if not root_entry:
@@ -66,12 +68,13 @@ def main():
     args = make_parser().parse_args()
     try:
         root_entries = get_root_entries(args.filename)
-    except ValueError:
+    except (libarchive.exception.ArchiveError, ValueError):
         logging.exception('failed to read "%s"', args.filename)
-    else:
-        print_report(root_entries, args.list_entries)
+        return 1
+    print_report(root_entries, args.list_entries)
     logging.shutdown()
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
